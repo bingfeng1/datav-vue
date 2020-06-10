@@ -10,13 +10,17 @@ Vue.use(VueRouter)
     name: 'Home',
     component: Home
   },
+  // 如果没有id参数，那就进入初始化模板页面
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path:'/screen_option',
+    name:'screen_option',
+    component: () => import(/* webpackChunkName: "option" */ '@/views/ScreenOption.vue')
+  },
+  // 如果有参数，那就根据参数进入修改页面
+  {
+    path:'/screen_option/:id',
+    name:'screen_option',
+    component: () => import(/* webpackChunkName: "option" */ '@/views/ScreenOption.vue')
   }
 ]
 
