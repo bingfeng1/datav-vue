@@ -5,20 +5,24 @@
     @dragging="onDrag"
     @resizing="onResize"
     :parent="true"
+    :scale="scale"
   >
-    <v-chart :options="polar" :autoresize="true"/>
+    <v-chart :options="option" :autoresize="true" style="width:100%;height:100%" />
   </vue-draggable-resizable>
 </template>
 
 <script>
 export default {
+  props: {
+    scale: Number
+  },
   data() {
     return {
-      width: 100,
-      height: 100,
+      width: 600,
+      height: 600,
       x: 0,
       y: 0,
-      polar: {
+      option: {
         xAxis: {
           type: "category",
           data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
