@@ -3,10 +3,19 @@
     <header>头部操作部分，控制以下部分</header>
     <main class="flex">
       <div style="flex:1">图层叠加</div>
-      <div style="flex:1">组件列表</div>
+      <div style="flex:1">
+        <ul>
+          <li v-for="item in componentList" :key="item.id" @click="addComponent(item)">{{item.name}}</li>
+        </ul>
+      </div>
       <div style="flex:6;position:relative;overflow:auto;" ref="showScreen">
         <div :style="screen">
-          <LineChart :scale="scale"></LineChart>
+          <component
+            v-for="item in my_components"
+            :is="item.codeName"
+            :key="item.id"
+            :scale="scale"
+          ></component>
         </div>
       </div>
       <div style="flex:1.5">组件配置</div>
@@ -15,13 +24,15 @@
 </template>
 
 <script>
-import { LineChart } from "@/components/chart";
+import { reqGetComponents } from "@/api";
 export default {
   data() {
     return {
       width: 1920,
       height: 1080,
-      scale: 1
+      scale: 1,
+      componentList: [],
+      my_components: []
     };
   },
   created() {
@@ -38,7 +49,7 @@ export default {
         margin: 0,
         padding: 0,
         outline: "1px solid red",
-        transform:`scale(${this.scale})`,
+        transform: `scale(${this.scale})`,
         "transform-origin": "left top"
       };
     }
@@ -49,6 +60,13 @@ export default {
       let { id } = this.$route.params;
       if (id) {
         // 这里进入数据库查询，并将相关组件进行页面布局操作
+        reqGetComponents().then(res => {
+          // console.log(res)
+          let { data } = res;
+          console.log(data)
+          this.my_components = [...data];
+          this.componentList = [...data];
+        });
       } else {
         //   进入配置设置页面，默认1080p
       }
@@ -67,12 +85,17 @@ export default {
         }
 
         widthPer = widthPer.toFixed(2);
-        this.scale = +widthPer
+        this.scale = +widthPer;
       });
+    },
+
+
+    addComponent(item){
+      this.my_components.push(item);  
     }
   },
   components: {
-    LineChart
+    LineChart: () => import("@/components/chart/line")
   }
 };
 </script>

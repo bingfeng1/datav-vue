@@ -51,6 +51,19 @@
 | data[].width | number | 定义宽度 |
 | data[].height | number | 定义长度 |
 
+
+ - [ ] 组件
+
+| 键名 | 类型 | 描述 |
+| ---- | ---- | ---- |
+| name | string | 组件中文名 |
+| codeName | string | 组件代码名称 |
+| type | string | 组件类型 |
+| x | number | 组件x轴位置 |
+| y | number | 组件y轴位置 |
+| width | number | 组件宽度 |
+| height | number | 组件高度 |
+
 ## 未来扩展功能
  - [ ] 账号密码登录，保存各个人的不同项目
  - [ ] 大屏页面加密功能

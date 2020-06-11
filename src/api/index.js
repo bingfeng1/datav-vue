@@ -13,9 +13,10 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(response => {
     const { data } = response
     if (data.status === 403) {
-        
+        //
     }
     if (data.status === 500) {
+        //
         
     }
     return response;
@@ -24,7 +25,10 @@ axios.interceptors.response.use(response => {
     return err.response
 })
 
+const reqGetComponents = ()=>{
+    return axios.get('/components')
+}
 
 export {
-    
+    reqGetComponents
 }
