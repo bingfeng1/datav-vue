@@ -1,27 +1,11 @@
 <template>
-  <vue-draggable-resizable
-    :w="width"
-    :h="height"
-    @dragging="onDrag"
-    @resizing="onResize"
-    :parent="true"
-    :scale="scale"
-  >
-    <v-chart :options="option" :autoresize="true" style="width:100%;height:100%" />
-  </vue-draggable-resizable>
+  <v-chart :options="option" :autoresize="true" style="width:100%;height:100%" />
 </template>
 
 <script>
 export default {
-  props: {
-    scale: Number
-  },
   data() {
     return {
-      width: 600,
-      height: 600,
-      x: 0,
-      y: 0,
       option: {
         xAxis: {
           type: "category",
@@ -39,17 +23,6 @@ export default {
       }
     };
   },
-  methods: {
-    onResize: function(x, y, width, height) {
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-    },
-    onDrag: function(x, y) {
-      this.x = x;
-      this.y = y;
-    }
-  }
+  methods: {}
 };
 </script>

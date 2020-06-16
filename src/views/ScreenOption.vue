@@ -1,8 +1,16 @@
 <template>
   <div>
-    <header>头部操作部分，控制以下部分</header>
+    <header class="testdo">头部操作部分，控制以下部分</header>
     <main class="flex">
-      <div style="flex:1">图层叠加</div>
+      <div style="flex:1">
+        <ul>
+          <li
+            v-for="item in my_components"
+            :key="item.my_id"
+            @click="deleteComponent(item.my_id)"
+          >{{item.name}}</li>
+        </ul>
+      </div>
       <div style="flex:1">
         <ul>
           <li v-for="item in componentList" :key="item.id" @click="addComponent(item)">{{item.name}}</li>
@@ -10,12 +18,9 @@
       </div>
       <div style="flex:6;position:relative;overflow:auto;" ref="showScreen">
         <div :style="screen">
-          <component
-            v-for="item in my_components"
-            :is="item.codeName"
-            :key="item.id"
-            :scale="scale"
-          ></component>
+          <DragResizeDiv v-for="item in my_components" :key="item.my_id">
+            <component :is="item.codeName"></component>
+          </DragResizeDiv>
         </div>
       </div>
       <div style="flex:1.5">组件配置</div>
@@ -24,16 +29,26 @@
 </template>
 
 <script>
+import { getUuid } from "@/util";
 import { reqGetComponents } from "@/api";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       width: 1920,
       height: 1080,
-      scale: 1,
+      // 所有已拥有的组件
       componentList: [],
+      // 本模板添加的组件
       my_components: []
     };
+  },
+  components: {
+    // 拖动组件
+    DragResizeDiv: () => import("@/components/common/DragResizeDiv"),
+    LineChart: () => import("@/components/chart/Line"),
+    TestChart: () => import("@/components/chart/Test3D"),
+    ListMove: () => import("@/components/chart/ListMove_Top")
   },
   created() {
     this.init();
@@ -52,7 +67,8 @@ export default {
         transform: `scale(${this.scale})`,
         "transform-origin": "left top"
       };
-    }
+    },
+    ...mapState(["scale"])
   },
   methods: {
     // 页面初始化操作
@@ -63,8 +79,6 @@ export default {
         reqGetComponents().then(res => {
           // console.log(res)
           let { data } = res;
-          console.log(data)
-          this.my_components = [...data];
           this.componentList = [...data];
         });
       } else {
@@ -85,17 +99,25 @@ export default {
         }
 
         widthPer = widthPer.toFixed(2);
-        this.scale = +widthPer;
+        this.$store.commit("setScale", +widthPer);
       });
     },
 
+    // 增加组件
+    addComponent(item) {
+      let _item = Object.assign({}, item);
+      _item.my_id = getUuid();
+      this.my_components.push(_item);
+    },
 
-    addComponent(item){
-      this.my_components.push(item);  
+    // 删除组件
+    deleteComponent(id) {
+      console.log(id);
+      let index = this.my_components.findIndex(item => {
+        return item.my_id === id;
+      });
+      this.my_components.splice(index, 1);
     }
-  },
-  components: {
-    LineChart: () => import("@/components/chart/line")
   }
 };
 </script>
@@ -113,5 +135,18 @@ main > div {
 }
 .flex {
   display: flex;
+}
+
+.testdo {
+  animation: todo 5s ease-in;
+  display: inline-block;
+  @keyframes todo {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 }
 </style>

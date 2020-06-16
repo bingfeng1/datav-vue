@@ -13,14 +13,13 @@ import ECharts from 'vue-echarts' // 在 webpack 环境下指向 components/ECha
 
 // 手动引入 ECharts 各模块来减小打包体积
 import 'echarts'
-
+import 'echarts-gl';
 
 // 拖动
 import VueDraggableResizable from 'vue-draggable-resizable'
 
 // optionally import default styles
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
-
 
 // 注册组件后即可使用
 Vue.component('v-chart', ECharts)

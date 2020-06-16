@@ -8,7 +8,9 @@ import {
     Row,
     Col,
     Card,
-    Input
+    Input,
+    Table,
+    TableColumn
 } from 'element-ui'
 
 Vue.use(Button)
@@ -20,3 +22,5 @@ Vue.use(Row)
 Vue.use(Col)
 Vue.use(Card)
 Vue.use(Input)
+Vue.use(Table)
+Vue.use(TableColumn)
