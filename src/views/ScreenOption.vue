@@ -48,7 +48,8 @@ export default {
     DragResizeDiv: () => import("@/components/common/DragResizeDiv"),
     LineChart: () => import("@/components/chart/Line"),
     TestChart: () => import("@/components/chart/Test3D"),
-    ListMove: () => import("@/components/chart/ListMove_Top")
+    ListMoveTop: () => import("@/components/chart/ListMove_Top"),
+    ListMoveLeft: () => import("@/components/chart/ListMove_Left")
   },
   created() {
     this.init();

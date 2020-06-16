@@ -24,7 +24,7 @@ const routes = [
   },
   {
     path: '/test',
-    component: () => import(/* webpackChunkName: "option" */ '@/components/chart/ListMove_Top.vue')
+    component: () => import(/* webpackChunkName: "option" */ '@/components/chart/ListMove_Left.vue')
   }
 ]
 
