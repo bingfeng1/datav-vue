@@ -34,8 +34,8 @@ export default {
     return {
       s_templates:[
         {
-          name:'大屏1',
-          id:'1'  // 数据库自带
+          id:1,
+          name:'test'
         }
       ]
     }

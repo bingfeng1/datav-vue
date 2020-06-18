@@ -46,10 +46,7 @@
 | height | number | 模板高度 |
 | mini_img | string | 大屏缩略图（未来开发） |
 | data | array | 各个组件的详细配置（需要递归解析，待定，详细设置在组件的表中） |
-| data[].x | number | 定义偏移x |
-| data[].y | number | 定义偏移y |
-| data[].width | number | 定义宽度 |
-| data[].height | number | 定义长度 |
+| data[].id | string | 组件id |
 
 
  - [ ] 组件

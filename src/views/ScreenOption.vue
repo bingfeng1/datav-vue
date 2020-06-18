@@ -49,7 +49,8 @@ export default {
     LineChart: () => import("@/components/chart/Line"),
     TestChart: () => import("@/components/chart/Test3D"),
     ListMoveTop: () => import("@/components/chart/ListMove_Top"),
-    ListMoveLeft: () => import("@/components/chart/ListMove_Left")
+    ListMoveLeft: () => import("@/components/chart/ListMove_Left"),
+    UserDefineChart:()=>import("@/components/chart/UserDefineChart")
   },
   created() {
     this.init();
@@ -106,6 +107,7 @@ export default {
 
     // 增加组件
     addComponent(item) {
+      // 这里应该需要触发数据库，从后端生成一个id，再返回给页面
       let _item = Object.assign({}, item);
       _item.my_id = getUuid();
       this.my_components.push(_item);
