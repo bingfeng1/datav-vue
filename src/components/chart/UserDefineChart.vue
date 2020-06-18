@@ -4,9 +4,14 @@
 
 <script>
 export default {
+  props:{
+    options:{
+      type:Object
+    }
+  },
   data() {
     return {
-      option: {
+      m_option: {
         xAxis: {
           type: "category",
           data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -22,6 +27,12 @@ export default {
         ]
       }
     };
+  },
+  computed: {
+    option(){
+      console.log(this.options)
+      return this.my_option
+    }
   },
   methods: {}
 };

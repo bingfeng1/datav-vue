@@ -19,7 +19,7 @@
       <div style="flex:6;position:relative;overflow:auto;" ref="showScreen">
         <div :style="screen">
           <DragResizeDiv v-for="item in my_components" :key="item.my_id">
-            <component :is="item.codeName"></component>
+            <component :is="item.codeName" :options="item"></component>
           </DragResizeDiv>
         </div>
       </div>
