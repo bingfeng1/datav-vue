@@ -10,7 +10,15 @@ import {
     Card,
     Input,
     Table,
-    TableColumn
+    TableColumn,
+    MessageBox,
+    Message,
+    Form,
+    Select,
+    FormItem,
+    Option,
+    InputNumber,
+    Switch
 } from 'element-ui'
 
 Vue.use(Button)
@@ -24,3 +32,13 @@ Vue.use(Card)
 Vue.use(Input)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Form)
+Vue.use(Select)
+Vue.use(FormItem)
+Vue.use(Option)
+Vue.use(InputNumber)
+Vue.use(Switch)
+
+
+Vue.prototype.$elMsgBox = MessageBox
+Vue.prototype.$message = Message
