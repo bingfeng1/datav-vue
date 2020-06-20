@@ -10,7 +10,11 @@ export default new Vuex.Store({
     // 激活的可移动区域
     activeArea:[
 
-    ]
+    ],
+    // 大屏相关属性
+    largeScreen:{
+
+    }
   },
   mutations: {
     setScale(state,num){
@@ -27,6 +31,11 @@ export default new Vuex.Store({
     // 取消激活
     clearAcriveArea(state){
       state.activeArea = []
+    },
+
+    // 设置大屏属性
+    setLargeScreen(state,config){
+      state.largeScreen = config
     }
   },
   actions: {

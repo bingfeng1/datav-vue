@@ -13,7 +13,7 @@ const routes = [
   // 如果没有id参数，那就进入初始化模板页面
   {
     path: '/screen_option',
-    name: 'screen_option',
+    // name: 'screen_option',
     component: () => import(/* webpackChunkName: "option" */ '@/views/ScreenOption.vue')
   },
   // 如果有参数，那就根据参数进入修改页面

@@ -19,41 +19,42 @@
           </el-col>
         </el-row>
       </el-main>
+
+      <!-- 新增大屏弹出层 -->
+      <el-dialog :visible.sync="createShow" width="80%" title="增加大屏">
+        <CreateTemplate />
+      </el-dialog>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import CreateTemplate from '@/components/home/CreateTemplate'
+import {reqGetLargeScreen} from '@/api'
 export default {
   // 模板数据，先试用模拟数据
   name: "Home",
   data() {
     return {
       s_templates: [
-        {
-          id: 1,
-          name: "test"
-        }
-      ]
+        
+      ],
+      createShow: false
     };
   },
+  created() {
+    // 获取已创建的大屏
+    this.getTemplate()
+  },
+  components: {
+    CreateTemplate: () => import("@/components/home/CreateTemplate")
+  },
   methods: {
-    // 添加模板
     addTemplate() {
-      // 1、弹出，需要显示的模板名称
-      // const h = this.$createElement;
-      this.$elMsgBox({
-          title: "消息",
-          // 弹出表单层
-          message: <CreateTemplate/>,
-          customClass:"msgBox",
-          showConfirmButton: false,
-          beforeClose: (action, instance, done) => {
-            console.log('关闭',action,instance,done)
-            done()
-          }
-        })
+      this.createShow = true;
+    },
+    async getTemplate(){
+      let {data} = await reqGetLargeScreen()
+      this.s_templates = data
     }
   }
 };
@@ -76,7 +77,7 @@ export default {
   background-color: #e9eef3;
 }
 
-.el-message-box.msgBox{
+.el-message-box.msgBox {
   width: 700px;
 }
 </style>

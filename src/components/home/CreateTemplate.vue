@@ -1,6 +1,6 @@
 <template>
   <el-form ref="form" :model="form" label-width="80px">
-      <!-- 这里设置模板中文名 -->
+    <!-- 这里设置模板中文名 -->
     <el-form-item label="模板名称">
       <el-input v-model="form.name"></el-input>
     </el-form-item>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import {reqPostLargeScreen} from '@/api'
 export default {
   data() {
     return {
@@ -52,11 +53,19 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       // 2、根据提交内容传给数据库
-      
+      const {data} = await reqPostLargeScreen(this.form)
 
-      // 3、根据得到的数据库id，作为参数跳转路由
+      // 3、将参数放入全局
+      this.$store.commit('setLargeScreen',data)
+
+      // 4、根据得到的数据库id，作为参数跳转路由
+      this.$router.push({
+        name:'screen_option',
+        params:{id:data._id}
+      })      
+
     },
     getPer(e) {
       if (e) {

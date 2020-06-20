@@ -25,10 +25,23 @@ axios.interceptors.response.use(response => {
     return err.response
 })
 
+// 获取所有组件
 const reqGetComponents = ()=>{
     return axios.get('/components')
 }
 
+// 增加大屏
+const reqPostLargeScreen = (data)=>{
+    return axios.post('/largeScreen',data)
+}
+
+// 获取所有大屏信息
+const reqGetLargeScreen = ()=>{
+    return axios.get('/largeScreen')
+}
+
 export {
-    reqGetComponents
+    reqGetComponents,
+    reqPostLargeScreen,
+    reqGetLargeScreen
 }

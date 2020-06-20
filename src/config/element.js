@@ -18,7 +18,8 @@ import {
     FormItem,
     Option,
     InputNumber,
-    Switch
+    Switch,
+    Dialog
 } from 'element-ui'
 
 Vue.use(Button)
@@ -38,6 +39,7 @@ Vue.use(FormItem)
 Vue.use(Option)
 Vue.use(InputNumber)
 Vue.use(Switch)
+Vue.use(Dialog)
 
 
 Vue.prototype.$elMsgBox = MessageBox
