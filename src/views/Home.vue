@@ -6,8 +6,8 @@
       <!-- 模板具体的增删改查部分 -->
       <el-main>
         <el-row :gutter="10">
-          <el-col :span="2" v-for="item in s_templates" :key="item.id">
-            <router-link :to="`/screen_option/${item.id}`">
+          <el-col :span="2" v-for="item in s_templates" :key="item._id">
+            <router-link :to="`/screen_option/${item._id}`">
               <el-card class="middle">{{item.name}}</el-card>
             </router-link>
           </el-col>

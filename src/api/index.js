@@ -17,31 +17,59 @@ axios.interceptors.response.use(response => {
     }
     if (data.status === 500) {
         //
-        
+
     }
     return response;
 }, err => {
-    
+
     return err.response
 })
 
 // 获取所有组件
-const reqGetComponents = ()=>{
+const reqGetComponents = () => {
     return axios.get('/components')
 }
 
 // 增加大屏
-const reqPostLargeScreen = (data)=>{
-    return axios.post('/largeScreen',data)
+const reqPostLargeScreen = (data) => {
+    return axios.post('/largeScreen', data)
 }
 
 // 获取所有大屏信息
-const reqGetLargeScreen = ()=>{
+const reqGetLargeScreen = () => {
     return axios.get('/largeScreen')
+}
+
+// 根据id获取长宽
+const reqGetLargeScreenById = id => {
+    return axios.get(`/largeScreen/${id}`)
+}
+
+// 获取自定义组件
+const reqGetCusteomComponent = id=>{
+    return axios.get(`/ownComponent/${id}`)
+}
+
+// 保存自定义组件
+const reqPostCustomComponent = data => {
+    return axios.post('/ownComponent', data)
+}
+
+// 删除自定义组件
+const reqDeleteCustomComponentById = _id => {
+    return axios.delete('/ownComponent', {
+        data:{
+            _id
+        }
+    })
 }
 
 export {
     reqGetComponents,
     reqPostLargeScreen,
-    reqGetLargeScreen
+    reqGetLargeScreen,
+    reqGetLargeScreenById,
+    reqPostCustomComponent,
+    reqDeleteCustomComponentById,
+    reqGetCusteomComponent
 }

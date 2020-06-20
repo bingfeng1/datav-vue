@@ -6,8 +6,8 @@
         <ul>
           <li
             v-for="item in my_components"
-            :key="item.my_id"
-            @click="deleteComponent(item.my_id)"
+            :key="item._id"
+            @click="deleteComponent(item._id)"
           >{{item.name}}</li>
         </ul>
       </div>
@@ -18,7 +18,7 @@
       </div>
       <div style="flex:6;position:relative;overflow:auto;" ref="showScreen">
         <div :style="screen">
-          <DragResizeDiv v-for="item in my_components" :key="item.my_id">
+          <DragResizeDiv v-for="item in my_components" :key="item._id">
             <component :is="item.codeName" :options="item"></component>
           </DragResizeDiv>
         </div>
@@ -29,8 +29,13 @@
 </template>
 
 <script>
-import { getUuid } from "@/util";
-import { reqGetComponents } from "@/api";
+import {
+  reqGetComponents,
+  reqGetLargeScreenById,
+  reqPostCustomComponent,
+  reqDeleteCustomComponentById,
+  reqGetCusteomComponent
+} from "@/api";
 import { mapState } from "vuex";
 export default {
   data() {
@@ -40,7 +45,9 @@ export default {
       // 所有已拥有的组件
       componentList: [],
       // 本模板添加的组件
-      my_components: []
+      my_components: [],
+      // 模板id
+      template_id: ""
     };
   },
   components: {
@@ -50,7 +57,7 @@ export default {
     TestChart: () => import("@/components/chart/Test3D"),
     ListMoveTop: () => import("@/components/chart/ListMove_Top"),
     ListMoveLeft: () => import("@/components/chart/ListMove_Left"),
-    UserDefineChart:()=>import("@/components/chart/UserDefineChart")
+    UserDefineChart: () => import("@/components/chart/UserDefineChart")
   },
   created() {
     this.init();
@@ -74,18 +81,24 @@ export default {
   },
   methods: {
     // 页面初始化操作
-    init() {
+    async init() {
       let { id } = this.$route.params;
-      if (id) {
-        // 这里进入数据库查询，并将相关组件进行页面布局操作
-        reqGetComponents().then(res => {
-          // console.log(res)
-          let { data } = res;
-          this.componentList = [...data];
-        });
-      } else {
-        //   进入配置设置页面，默认1080p
-      }
+      this.template_id = id;
+      // 查寻数据库所保存的长宽属性
+      let { data: screenConfig } = await reqGetLargeScreenById(id);
+
+      // 将模板的长宽放入
+      let { width, height } = screenConfig;
+      this.width = width;
+      this.height = height;
+
+      // 这里进入数据库查询，并将相关组件进行页面布局操作
+      let { data } = await reqGetComponents();
+      this.componentList = [...data];
+
+      // 获取本大屏已使用的组件
+      let { data: s_data } = await reqGetCusteomComponent(id);
+      this.my_components = [...s_data];
 
       // 这里计算大小比例
       this.$nextTick(() => {
@@ -96,8 +109,9 @@ export default {
         let widthPer = clientWidth / this.width;
         let heightPer = clientHeight / this.height;
 
+        // 获取合理的长宽比（后期需要使用类似图片放大镜效果，这里临时使用）
         if (widthPer > heightPer) {
-          heightPer = widthPer;
+          widthPer = heightPer;
         }
 
         widthPer = widthPer.toFixed(2);
@@ -106,20 +120,37 @@ export default {
     },
 
     // 增加组件
-    addComponent(item) {
+    async addComponent(item) {
       // 这里应该需要触发数据库，从后端生成一个id，再返回给页面
-      let _item = Object.assign({}, item);
-      _item.my_id = getUuid();
-      this.my_components.push(_item);
+      // 保存在数据库
+      let { data } = await reqPostCustomComponent({
+        ...item,
+        parent_id: this.template_id // 这里需要大屏组件的id
+      });
+
+      this.my_components.push(data);
     },
 
     // 删除组件
-    deleteComponent(id) {
-      console.log(id);
-      let index = this.my_components.findIndex(item => {
-        return item.my_id === id;
-      });
-      this.my_components.splice(index, 1);
+    async deleteComponent(id) {
+      // 根据id删除
+      let { data } = await reqDeleteCustomComponentById(id);
+      // 如果有删除条目（通过id删除，一定唯一）
+      if (data.deletedCount === 1) {
+        // 在数组中排除
+        let index = this.my_components.findIndex(item => {
+          return item._id === data.id;
+        });
+
+        this.my_components.splice(index, 1);
+      } else {
+        // 这里是删除发生错误
+        this.$message({
+          message: "删除失败，删除的id:" + id,
+          type: "error"
+        });
+        console.error("删除失败的组件id:" + id);
+      }
     }
   }
 };

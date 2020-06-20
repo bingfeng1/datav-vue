@@ -57,9 +57,6 @@ export default {
       // 2、根据提交内容传给数据库
       const {data} = await reqPostLargeScreen(this.form)
 
-      // 3、将参数放入全局
-      this.$store.commit('setLargeScreen',data)
-
       // 4、根据得到的数据库id，作为参数跳转路由
       this.$router.push({
         name:'screen_option',
@@ -67,6 +64,7 @@ export default {
       })      
 
     },
+    // 获取宽高百分比
     getPer(e) {
       if (e) {
         this.per = this.form.width / this.form.height;

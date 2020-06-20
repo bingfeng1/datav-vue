@@ -11,10 +11,6 @@ export default new Vuex.Store({
     activeArea:[
 
     ],
-    // 大屏相关属性
-    largeScreen:{
-
-    }
   },
   mutations: {
     setScale(state,num){
@@ -33,10 +29,6 @@ export default new Vuex.Store({
       state.activeArea = []
     },
 
-    // 设置大屏属性
-    setLargeScreen(state,config){
-      state.largeScreen = config
-    }
   },
   actions: {
   },
