@@ -3,6 +3,8 @@
   <vue-draggable-resizable
     :w="width"
     :h="height"
+    :x="x"
+    :y="y"
     @dragging="onDrag"
     @resizing="onResize"
     :scale="scale"
@@ -19,7 +21,9 @@
 
 <script>
 import { mapState } from "vuex";
+import { debounce } from "@/util";
 export default {
+  props: ["item"],
   data() {
     return {
       width: 600,
@@ -31,14 +35,18 @@ export default {
   computed: {
     ...mapState(["scale"])
   },
+  created() {
+    this.mergeAttr();
+  },
   methods: {
     // 调整大小
-    onResize: function(x, y, width, height) {
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-    },
+    onResize: debounce((_this, x, y, width, height) => {
+      _this.x = x*_this.scale
+      _this.y = y*_this.scale
+      _this.width = width*_this.scale
+      _this.height = height*_this.scale
+      
+    }, 2000),
     // 调整方位
     onDrag: function(x, y) {
       this.x = x;
@@ -47,6 +55,17 @@ export default {
     // 当激活时
     onActivated() {
       // this.$store.commit("setOption", this.option);
+    },
+    // 合并传入的参数
+    mergeAttr() {
+      // 合并属性
+      if (this.item.attr) {
+        let { x, y, width, height } = this.item.attr;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+      }
     }
   }
 };

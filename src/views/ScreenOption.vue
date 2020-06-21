@@ -18,8 +18,8 @@
       </div>
       <div style="flex:6;position:relative;overflow:auto;" ref="showScreen">
         <div :style="screen">
-          <DragResizeDiv v-for="item in my_components" :key="item._id">
-            <component :is="item.codeName" :options="item"></component>
+          <DragResizeDiv v-for="item in my_components" :key="item._id" :item="item">
+            <component :is="item.codeName" :item="item"></component>
           </DragResizeDiv>
         </div>
       </div>
@@ -139,7 +139,7 @@ export default {
       if (data.deletedCount === 1) {
         // 在数组中排除
         let index = this.my_components.findIndex(item => {
-          return item._id === data.id;
+          return item._id === id;
         });
 
         this.my_components.splice(index, 1);

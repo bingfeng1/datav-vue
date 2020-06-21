@@ -31,7 +31,7 @@ export default {
   computed: {
     option(){
       console.log(this.options)
-      return this.my_option
+      return this.m_option
     }
   },
   methods: {}
