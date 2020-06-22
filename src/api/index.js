@@ -55,6 +55,12 @@ const reqPostCustomComponent = data => {
     return axios.post('/ownComponent', data)
 }
 
+// 修改自定义组件
+const reqPutCustomComponent = data => {
+    return axios.put('/ownComponent', data)
+}
+
+
 // 删除自定义组件
 const reqDeleteCustomComponentById = _id => {
     return axios.delete('/ownComponent', {
@@ -71,5 +77,6 @@ export {
     reqGetLargeScreenById,
     reqPostCustomComponent,
     reqDeleteCustomComponentById,
-    reqGetCusteomComponent
+    reqGetCusteomComponent,
+    reqPutCustomComponent
 }

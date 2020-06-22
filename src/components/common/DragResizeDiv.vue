@@ -5,8 +5,8 @@
     :h="height"
     :x="x"
     :y="y"
-    @dragging="onDrag"
-    @resizing="onResize"
+    @dragstop="onDrag"
+    @resizestop="onResize"
     :scale="scale"
     :parent="true"
     @activated="onActivated"
@@ -21,7 +21,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { debounce } from "@/util";
+import { reqPutCustomComponent } from "@/api";
 export default {
   props: ["item"],
   data() {
@@ -40,17 +40,58 @@ export default {
   },
   methods: {
     // 调整大小
-    onResize: debounce((_this, x, y, width, height) => {
-      _this.x = x*_this.scale
-      _this.y = y*_this.scale
-      _this.width = width*_this.scale
-      _this.height = height*_this.scale
-      
-    }, 2000),
+    onResize(x, y, width, height) {
+      // 这里的参数，都将存入数据库，用于update
+      let _id = this.item._id;
+      let attr = {
+        x,
+        y,
+        width,
+        height
+      };
+      reqPutCustomComponent({
+        _id,
+        attr
+      }).then(res => {
+        if (res.data._id) {
+          this.$message({
+            type: "success",
+            message: "数据更新成功"
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "数据更新失败"
+          });
+        }
+      });
+    },
     // 调整方位
-    onDrag: function(x, y) {
-      this.x = x;
-      this.y = y;
+    onDrag(x, y) {
+      // 这里的参数，都将存入数据库，用于update
+      let _id = this.item._id;
+      let attr = {
+        x,
+        y,
+        width: this.width,
+        height: this.height
+      };
+      reqPutCustomComponent({
+        _id,
+        attr
+      }).then(res => {
+        if (res.data._id) {
+          this.$message({
+            type: "success",
+            message: "数据更新成功"
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "数据更新失败"
+          });
+        }
+      });
     },
     // 当激活时
     onActivated() {
@@ -61,10 +102,10 @@ export default {
       // 合并属性
       if (this.item.attr) {
         let { x, y, width, height } = this.item.attr;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        x && (this.x = x);
+        y && (this.y = y);
+        width && (this.width = width);
+        height && (this.height = height);
       }
     }
   }
